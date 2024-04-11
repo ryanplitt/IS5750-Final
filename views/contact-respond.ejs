@@ -1,5 +1,5 @@
 <h1><span>respond to contact request</span></h1>
-<form action="/contacts/<%=contact.id%>/update" method="post">
+<form action="/contacts/<%=contact._id%>/update" method="post">
 	<div class="disabled">
 		<input type="text" name="name" id="fname" placeholder="name" disabled="disabled" value="<%=contact.name%>">
 		<input type="text" name="address" id="address" placeholder="address" disabled="disabled" value="<%=contact.address%>">
@@ -10,7 +10,7 @@
 		<hr />
 	</div>
 	<textarea name="response" id="response" placeholder="<%- contact.response ? contact.response : 'RESPONSE'%>" required <%- contact.response ? 'disabled=`disabled`' : ''%>></textarea>
-	<input type="hidden" name="id" id="<%=contact.id%>" value="23598798797235">
+	<input type="hidden" name="_id" id="<%=contact._id%>" value="23598798797235">
 
 	<input type="submit" name="send" id="send" value="send" <%- contact.response ? 'disabled=`disabled`' : ''%> style="<%- contact.response ? 'pointer-events: none;' : 'pointer-events: auto;'%>">
 	<a href="/contacts" name="cancel" id="cancel">cancel</a>
