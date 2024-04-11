@@ -1,50 +1,46 @@
-const Sequelize = require("sequelize");
-const sequelize = require("../util/database");
+const mongoose = require("mongoose");
 const slugify = require("slugify");
 
-const BlogPost = sequelize.define("blogPost", {
-  id: {
-    type: Sequelize.INTEGER,
-    autoIncrement: true,
-    primaryKey: true,
-    allowNull: false,
-  },
-  title: {
-    type: Sequelize.STRING(50),
-    allowNull: false,
-    set(value) {
-      this.setDataValue("title", value);
-      // add slug
-      this.setDataValue(
-        "titleSlug",
-        slugify(value, { lower: true, trim: true })
-      );
-    },
-  },
-  imageURL: {
-    type: Sequelize.STRING,
-    allowNull: false,
-    validate: {
-      is: ["([^s]+(.(?i)(jpg|png))$)"],
-    },
-  },
-  summary: {
-    type: Sequelize.STRING(350),
-    allowNull: false,
-  },
-  content: {
-    type: Sequelize.STRING,
-    allowNull: false,
-  },
-  postDate: {
-    type: Sequelize.DATE,
-    allowNull: false,
-    defaultValue: Sequelize.NOW,
-  },
-  titleSlug: {
-    type: Sequelize.STRING,
-    allowNull: false,
-  },
+const blogPostSchema = new mongoose.Schema({
+	title: {
+		type: String,
+		required: true,
+		trim: true,
+		set: function (value) {
+			this.titleSlug = slugify(value, { lower: true });
+			return value;
+		},
+	},
+	imageURL: {
+		type: String,
+		required: true,
+		validate: {
+			validator: function (value) {
+				return /\.(jpg|png)$/i.test(value);
+			},
+			message: "Invalid image URL",
+		},
+	},
+	summary: {
+		type: String,
+		required: true,
+		maxlength: 350,
+	},
+	content: {
+		type: String,
+		required: true,
+	},
+	postDate: {
+		type: Date,
+		required: true,
+		default: Date.now,
+	},
+	titleSlug: {
+		type: String,
+		required: true,
+	},
 });
+
+const BlogPost = mongoose.model("BlogPost", blogPostSchema);
 
 module.exports = BlogPost;

@@ -1,41 +1,36 @@
-const Sequelize = require("sequelize");
-const sequelize = require("../util/database");
+const mongoose = require("mongoose");
 const slugify = require("slugify");
 
-const MustacheStyle = sequelize.define("styles", {
-  id: {
-    type: Sequelize.INTEGER,
-    autoIncrement: true,
-    primaryKey: true,
-    allowNull: false,
-  },
-  title: {
-    type: Sequelize.STRING(50),
-    allowNull: false,
-    set(value) {
-      this.setDataValue("title", value);
-      // add slug
-      this.setDataValue(
-        "titleSlug",
-        slugify(value, { lower: true, trim: true })
-      );
-    },
-  },
-  imageURL: {
-    type: Sequelize.STRING,
-    allowNull: false,
-    validate: {
-      is: ["([^s]+(.(?i)(jpg|png))$)"],
-    },
-  },
-  description: {
-    type: Sequelize.STRING,
-    allowNull: false,
-  },
-  titleSlug: {
-    type: Sequelize.STRING,
-    allowNull: false,
-  },
+const mustacheStyleSchema = new mongoose.Schema({
+	title: {
+		type: String,
+		required: true,
+		trim: true,
+		set: function (value) {
+			this.titleSlug = slugify(value, { lower: true });
+			return value;
+		},
+	},
+	imageURL: {
+		type: String,
+		required: true,
+		validate: {
+			validator: function (value) {
+				return /\.(jpg|png)$/i.test(value);
+			},
+			message: "Invalid image URL",
+		},
+	},
+	description: {
+		type: String,
+		required: true,
+	},
+	titleSlug: {
+		type: String,
+		required: true,
+	},
 });
+
+const MustacheStyle = mongoose.model("MustacheStyle", mustacheStyleSchema);
 
 module.exports = MustacheStyle;

@@ -6,7 +6,7 @@ const express = require("express");
 const ejs = require("ejs");
 const expressLayouts = require("express-ejs-layouts");
 
-const sequelize = require("./util/database");
+const mongoose = require("mongoose");
 
 // import routes
 const homeRoutes = require("./routes/homeRoutes");
@@ -14,7 +14,7 @@ const stylesRoutes = require("./routes/stylesRoutes");
 const blogRoutes = require("./routes/blogRoutes");
 const contactRoutes = require("./routes/contactRoutes");
 
-const middleware = require("./middleware")
+const middleware = require("./middleware");
 
 const app = express();
 
@@ -41,9 +41,15 @@ app.use("/contacts", contactRoutes);
 app.use(homeRoutes);
 
 // start the server on port 3000
-sequelize
-  .sync()
-  .then(() => {
-    app.listen(3000);
-  })
-  .catch((e) => console.log(e));
+mongoose
+	.connect(
+		"mongodb+srv://ryanplitt:9c4NFpxojEzlypx2@cluster0.5eehl2z.mongodb.net/mustacchio?retryWrites=true&w=majority&appName=Cluster0"
+	)
+	.then(() => {
+		app.listen(3000, () => {
+			console.log("Server started on http://localhost:3000");
+		});
+	})
+	.catch((err) => {
+		console.log(err);
+	});
