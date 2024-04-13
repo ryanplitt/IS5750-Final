@@ -1,5 +1,11 @@
 <h1><span>Sign Up</span></h1>
 
+<% if (useMockData) { %>
+  <% const mockData = { firstName: 'Plitt', lastName: 'Link', email: 'plittlink@plitt.com' }; %>
+  <% locals.entries = locals.entries || {}; %>
+  <% Object.assign(locals.entries, mockData); %>
+<% } %>
+
 <form action="/auth/signup" method="POST">
   <input
     type="text"
