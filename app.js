@@ -6,6 +6,7 @@ const express = require("express");
 const ejs = require("ejs");
 const expressLayouts = require("express-ejs-layouts");
 const session = require("express-session");
+const MongoDBStore = require("connect-mongodb-session")(session);
 
 const mongoose = require("mongoose");
 
@@ -14,6 +15,7 @@ const homeRoutes = require("./routes/homeRoutes");
 const stylesRoutes = require("./routes/stylesRoutes");
 const blogRoutes = require("./routes/blogRoutes");
 const contactRoutes = require("./routes/contactRoutes");
+const authRoutes = require("./routes/authRoutes.js");
 
 const middleware = require("./middleware");
 
@@ -62,6 +64,7 @@ app.use(middleware);
 app.use("/styles", stylesRoutes);
 app.use("/blog", blogRoutes);
 app.use("/contacts", contactRoutes);
+app.use("/auth", authRoutes);
 
 app.use(homeRoutes);
 

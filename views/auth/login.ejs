@@ -1,0 +1,21 @@
+<h1><span>Log In</span></h1>
+
+<form action="/auth/login" method="POST">
+		<input
+			type="email"
+			name="email"
+			id="email"
+			value="<%= locals.entries && locals.entries.email %>";
+      placeholder="Email"
+		/>
+		<input
+			type="password"
+			name="password"
+			id="password"
+			value="<%= locals.entries && locals.entries.password %>"
+      placeholder="Password"
+		/>
+	<input type="submit" id="send" value="Submit" />
+	<p><a href="/auth/signup">New here? Create an account!</a></p>
+</form>
+</div>
