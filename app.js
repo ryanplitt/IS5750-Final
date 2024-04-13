@@ -5,6 +5,7 @@ const path = require("path");
 const express = require("express");
 const ejs = require("ejs");
 const expressLayouts = require("express-ejs-layouts");
+const session = require("express-session");
 
 const mongoose = require("mongoose");
 
@@ -18,11 +19,35 @@ const middleware = require("./middleware");
 
 const app = express();
 
+const MongoDBURL =
+	"mongodb+srv://ryanplitt:9c4NFpxojEzlypx2@cluster0.5eehl2z.mongodb.net/mustacchio?retryWrites=true&w=majority&appName=Cluster0";
+
+// Initialize session store
+const store = new MongoDBStore({
+	uri: MongoDBURL,
+	collection: "sessions",
+});
+
 // Load middleware to point to static resources
 app.use(express.static(path.join(__dirname, "public")));
 
 // Load middleware to parse body
 app.use(express.urlencoded({ extended: false }));
+
+app.use(
+	session({
+		secret: "my secret",
+		resave: false,
+		saveUninitialized: false,
+		store: store,
+	})
+);
+
+app.use((req, res, next) => {
+	res.locals.isLoggedIn = req.session.isLoggedIn;
+	res.locals.user = req.session.user;
+	next();
+});
 
 // Set the templating engine using app.set
 app.set("view engine", "ejs");
@@ -42,9 +67,7 @@ app.use(homeRoutes);
 
 // start the server on port 3000
 mongoose
-	.connect(
-		"mongodb+srv://ryanplitt:9c4NFpxojEzlypx2@cluster0.5eehl2z.mongodb.net/mustacchio?retryWrites=true&w=majority&appName=Cluster0"
-	)
+	.connect(MongoDBURL)
 	.then(() => {
 		app.listen(3000, () => {
 			console.log("Server started on http://localhost:3000");
