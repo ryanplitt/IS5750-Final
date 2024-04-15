@@ -5,7 +5,7 @@ exports.getLogin = (req, res) => {
 };
 
 exports.postLogin = (req, res) => {
-	res.redirect("/");
+	authUser(req, res, loginWebApp);
 };
 
 exports.getSignup = (req, res) => {
@@ -31,8 +31,35 @@ exports.authUser = async (req, res, next) => {
 		next();
 	} catch (err) {
 		console.log(err);
-		next();
+		next(err);
 	}
+};
+
+exports.loginWebApp = async (req, res, next) => {
+	if (res.locals && res.locals.user && res.locals.passwordsMatch) {
+		req.session.isLoggedIn = true;
+		req.session.user = res.locals.user;
+		console.log(
+			"Setting session, user: ",
+			req.session.user,
+			"isLoggedIn: ",
+			req.session.isLoggedIn
+		);
+		try {
+			await req.session.save();
+			res.redirect("/");
+			return;
+		} catch (err) {
+			console.log(err);
+			next(err);
+			return;
+		}
+	}
+	res.render("auth/login", {
+		pageTitle: "Login",
+		message: "Invalid Credentials",
+		entries: req.body,
+	});
 };
 
 exports.postSignup = async (req, res) => {

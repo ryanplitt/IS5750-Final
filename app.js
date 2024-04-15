@@ -16,6 +16,7 @@ const stylesRoutes = require("./routes/stylesRoutes");
 const blogRoutes = require("./routes/blogRoutes");
 const contactRoutes = require("./routes/contactRoutes");
 const authRoutes = require("./routes/authRoutes.js");
+const errorController = require("./controllers/errorController");
 
 const middleware = require("./middleware");
 
@@ -46,6 +47,7 @@ app.use(
 );
 
 app.use((req, res, next) => {
+	console.log("Setting locals", "isLoggedIn: ", req.session.isLoggedIn, "user: ", req.session.user);
 	res.locals.isLoggedIn = req.session.isLoggedIn;
 	res.locals.user = req.session.user;
 	next();
@@ -67,6 +69,9 @@ app.use("/contacts", contactRoutes);
 app.use("/auth", authRoutes);
 
 app.use(homeRoutes);
+
+app.use(errorController.get404);
+app.use(errorController.get500);
 
 // start the server on port 3000
 mongoose

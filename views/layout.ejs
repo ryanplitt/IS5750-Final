@@ -18,8 +18,11 @@
 	<body>
 		<div id="header">
 			<a href="/" class="logo">
-				<img src="images/logo.jpg" alt="" />
+				<img src="/images/logo.jpg" alt="" />
 			</a>
+			<% console.log(locals) %> <% if (locals.user) { %>
+			<h2>Welcome, user.firstName</h2>
+			<% } %>
 			<ul id="navigation">
 				<li class="<%- path === '/' ? 'selected' : ''%>">
 					<a href="/">home</a>
