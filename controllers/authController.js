@@ -4,16 +4,12 @@ exports.getLogin = (req, res) => {
 	res.render("auth/login", { pageTitle: "Login", path: req.baseUrl });
 };
 
-exports.postLogin = (req, res) => {
-	authUser(req, res, loginWebApp);
-};
-
 exports.getSignup = (req, res) => {
-	res.render("auth/signup", { pageTitle: "Signup", path: req.baseUrl, useMockData: true });
+	res.render("auth/signup", { pageTitle: "Signup", path: req.baseUrl });
 };
 
 exports.authUser = async (req, res, next) => {
-	const email = req.body.email;
+	const email = req.body.email.toLowerCase();
 	const password = req.body.password;
 
 	try {
@@ -94,6 +90,11 @@ exports.postSignup = async (req, res) => {
 	}
 };
 
-exports.getLogout = (req, res) => {
+exports.getLogout = async (req, res) => {
+	try {
+		await req.session.destroy();
+	} catch (err) {
+		console.log(err);
+	}
 	res.redirect("/");
 };

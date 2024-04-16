@@ -37,6 +37,8 @@ app.use(express.static(path.join(__dirname, "public")));
 // Load middleware to parse body
 app.use(express.urlencoded({ extended: false }));
 
+app.use(express.json());
+
 app.use(
 	session({
 		secret: "my secret",
@@ -47,7 +49,6 @@ app.use(
 );
 
 app.use((req, res, next) => {
-	console.log("Setting locals", "isLoggedIn: ", req.session.isLoggedIn, "user: ", req.session.user);
 	res.locals.isLoggedIn = req.session.isLoggedIn;
 	res.locals.user = req.session.user;
 	next();

@@ -4,6 +4,34 @@
 	<div class="article">
 		<h4><%=style.title%></h4>
 		<p><%=style.description%></p>
+		<button class="button1" id="favoritesButton" onclick="toggleFavorites('<%= style.titleSlug %>')">
+			<% if (isFavorite) { %>
+				Remove from Favorites
+			<% } else { %>
+				Add to Favorites
+			<% } %>
+		</button>
 	</div>
 </div>
 </div>
+
+<script>
+    function toggleFavorites(styleSlug) {
+        fetch(`/styles/${encodeURIComponent(styleSlug)}/favorite`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.isFavorite) {
+                document.getElementById('favoritesButton').textContent = 'Remove from Favorites';
+            } else {
+                document.getElementById('favoritesButton').textContent = 'Add to Favorites';
+            }
+        })
+        .catch(error => console.error('Error toggling favorite:', error));
+    }
+</script>
