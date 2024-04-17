@@ -14,11 +14,17 @@ exports.getSingleStyle = async (req, res, next) => {
 	const { styleSlug } = req.params;
 	try {
 		const style = await MustacheStyle.findOne({ titleSlug: styleSlug.toLowerCase() });
+		let isFavorite = false;
+		if (res.locals.user) {
+			const user = await User.findById(res.locals.user._id);
+			isFavorite = user.favoriteStyles.includes(style._id);
+			console.log(user);
+		}
 		res.render("gallery-single-post", {
 			pageTitle: style.title,
 			style,
 			path: req.baseUrl,
-			isFavorite: false, // TODO: Implement favorite feature
+			isFavorite: isFavorite,
 		});
 	} catch (e) {
 		console.log("error: ", e);
