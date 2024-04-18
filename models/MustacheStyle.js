@@ -13,10 +13,10 @@ const mustacheStyleSchema = new mongoose.Schema({
 	},
 	imageURL: {
 		type: String,
-		required: true,
+		required: false,
 		validate: {
 			validator: function (value) {
-				return /\.(jpg|png)$/i.test(value);
+				return /\.(jpeg|jpg|png)$/i.test(value);
 			},
 			message: "Invalid image URL",
 		},

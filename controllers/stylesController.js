@@ -1,5 +1,7 @@
 const MustacheStyle = require("../models/MustacheStyle");
-const User = require("../models/user");
+const User = require("../models/User");
+const path = require("path");
+const sharp = require("sharp");
 
 exports.getStyles = async (req, res, next) => {
 	try {
@@ -70,5 +72,49 @@ exports.getFavoriteStyles = async (req, res, next) => {
 		});
 	} catch (e) {
 		console.log("error: ", e);
+	}
+};
+
+exports.getNewStyle = (req, res, next) => {
+	res.render("new-style", { pageTitle: "New Style", path: req.baseUrl });
+};
+
+exports.postNewStyle = async (req, res, next) => {
+	const { title, description } = req.body;
+
+	if (!req.files || Object.keys(req.files).length === 0) {
+		return res.status(400).send("No image was uploaded.");
+	}
+
+	const style = new MustacheStyle({
+		title,
+		description,
+	});
+
+	const styleImage = req.files.styleImage;
+	const newFileName = `${style.titleSlug}${path.extname(styleImage.name)}`;
+	const uploadPath = path.join(__dirname, "../public/images/", newFileName);
+
+	try {
+		// Resize and crop the image to 295x295 pixels
+		await sharp(styleImage.data)
+			.resize({
+				width: 295,
+				height: 295,
+				fit: sharp.fit.cover,
+				position: sharp.strategy.entropy,
+			})
+			.greyscale()
+			.toFormat("jpeg")
+			.toFile(uploadPath);
+
+		style.imageURL = `images/${newFileName}`;
+
+		await style.save();
+
+		res.redirect("/styles");
+	} catch (err) {
+		console.error("Error processing the image or saving new style:", err);
+		res.redirect("/styles/new");
 	}
 };

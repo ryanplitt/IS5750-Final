@@ -478,11 +478,15 @@ p a:hover {
 	background-color:#FFFFFF;
 	}
 	@media all and (max-width:30em){
-	 .button1{
-	display:block;
-	margin:0.4em auto;
-	 }
+		.button1{
+			display:block;
+			margin:0.4em auto;
+		}
 	}
+.button-container {
+	padding-top: 40px;
+	font-size: 20px;
+}
 #footer {
 	background: #252525;
 	margin: 0;

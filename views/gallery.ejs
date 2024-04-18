@@ -4,6 +4,11 @@
 	<h1><span>No Favorites Selected</span></h1>
 <% } else { %>
 	<h1><span>Style Gallery</span></h1>
+	<div>
+	<div class="button-container">
+		<a href="/styles/new" class="button1">New Style</a>
+	</div>
+	</div>
 <% } %>
 <ul class="gallery">
 	<% styles.forEach((style) => { %>

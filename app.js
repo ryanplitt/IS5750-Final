@@ -7,6 +7,7 @@ const ejs = require("ejs");
 const expressLayouts = require("express-ejs-layouts");
 const session = require("express-session");
 const MongoDBStore = require("connect-mongodb-session")(session);
+const fileUpload = require("express-fileupload");
 
 const mongoose = require("mongoose");
 
@@ -38,6 +39,7 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use(express.urlencoded({ extended: false }));
 
 app.use(express.json());
+app.use(fileUpload({ createParentPath: true }));
 
 app.use(
 	session({

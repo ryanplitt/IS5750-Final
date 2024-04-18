@@ -7,7 +7,11 @@ router.get("/", stylesController.getStyles);
 
 router.get("/favorite", stylesController.getFavoriteStyles);
 
-router.post("/:styleSlug/favorite", stylesController.toggleFavorite); // TODO: Make this authenticated
+router.get("/new", stylesController.getNewStyle);
+
+router.post("/new", stylesController.postNewStyle);
+
+router.post("/:styleSlug/favorite", stylesController.toggleFavorite); // TODO: Make this authenticated?
 
 router.get("/:styleSlug", stylesController.getSingleStyle);
 
