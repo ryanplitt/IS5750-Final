@@ -30,7 +30,7 @@
 				<li class="<%- path.includes('about') ? 'selected' : ''%>">
 					<a href="/about">about</a>
 				</li>
-				<li class="<%- path.includes('styles') ? 'selected' : ''%>">
+				<li class="<%- path.includes('styles') && !path.includes('favorites') ? 'selected' : ''%>">
 					<a href="/styles">gallery</a>
 				</li>
 				<li class="<%- path.includes('blog') ? 'selected' : ''%>">
@@ -43,6 +43,9 @@
 					<a href="/contacts">contact requests</a>
 				</li>
 				<% if (isLoggedIn) { %>
+				<li class="<%- path === '/styles/favorites' ? 'selected' : ''%>">
+					<a href="/styles/favorite">Favorite Styles</a>
+				</li>
 				<li>
 					<a href="/auth/logout">Logout</a>
 				</li>

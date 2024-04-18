@@ -1,8 +1,14 @@
-<h1><span>style gallery</span></h1>
+<% if (isFavorites && styles.length > 0) { %>
+	<h1><span>Favorites</span></h1>
+<% } else if (isFavorites && styles.length === 0) { %>
+	<h1><span>No Favorites Selected</span></h1>
+<% } else { %>
+	<h1><span>Style Gallery</span></h1>
+<% } %>
 <ul class="gallery">
 	<% styles.forEach((style) => { %>
 	<li>
-		<a href="styles/<%=style.titleSlug%>" name="<%=style.titleSlug%>">
+		<a href="/styles/<%=style.titleSlug%>" name="<%=style.titleSlug%>">
 			<img src="/<%=style.imageURL%>" alt="<%=style.description%>">
 		</a>
 	</li>

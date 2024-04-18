@@ -4,7 +4,7 @@ const User = require("../models/user");
 exports.getStyles = async (req, res, next) => {
 	try {
 		const styles = await MustacheStyle.find();
-		res.render("gallery", { pageTitle: "Gallery", styles, path: req.baseUrl });
+		res.render("gallery", { pageTitle: "Gallery", styles, path: req.baseUrl, isFavorites: false });
 	} catch (e) {
 		console.log("error: ", e);
 	}
@@ -55,5 +55,20 @@ exports.toggleFavorite = async (req, res) => {
 	} catch (err) {
 		console.error("Error toggling favorite:", err);
 		return res.json({ error: err.message });
+	}
+};
+
+exports.getFavoriteStyles = async (req, res, next) => {
+	try {
+		const user = User.hydrate(res.locals.user);
+		const favoriteStyles = await MustacheStyle.find({ _id: { $in: user.favoriteStyles } });
+		res.render("gallery", {
+			pageTitle: "Favorite Styles",
+			styles: favoriteStyles,
+			path: "/styles/favorites",
+			isFavorites: true,
+		});
+	} catch (e) {
+		console.log("error: ", e);
 	}
 };
