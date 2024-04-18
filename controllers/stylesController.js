@@ -14,9 +14,9 @@ exports.getSingleStyle = async (req, res, next) => {
 	const { styleSlug } = req.params;
 	try {
 		const style = await MustacheStyle.findOne({ titleSlug: styleSlug.toLowerCase() });
+		const user = User.hydrate(res.locals.user);
 		let isFavorite = false;
 		if (res.locals.user) {
-			const user = await User.findById(res.locals.user._id);
 			isFavorite = user.favoriteStyles.includes(style._id);
 			console.log(user);
 		}
@@ -34,23 +34,23 @@ exports.getSingleStyle = async (req, res, next) => {
 exports.toggleFavorite = async (req, res) => {
 	console.log("Made it to the styles controller toggle favorite");
 	const { styleSlug } = req.params;
-	const userId = res.locals.user._id;
 
 	try {
-		const user = await User.findById(userId);
+		const user = User.hydrate(res.locals.user);
 		const style = await MustacheStyle.findOne({ titleSlug: styleSlug.toLowerCase() });
 		if (!style) {
 			throw new Error("Style Not Found");
 		}
 
+		let toggleResult = false;
 		if (user.favoriteStyles.includes(style._id)) {
-			user.favoriteStyles = user.favoriteStyles.filter((id) => id !== style._id);
+			user.favoriteStyles.pull(style._id);
 		} else {
+			toggleResult = true;
 			user.favoriteStyles.push(style._id);
 		}
-		await user.save();
+		req.session.user = await user.save();
 
-		const toggleResult = user.favoriteStyles.includes(style._id);
 		return res.json({ isFavorite: toggleResult });
 	} catch (err) {
 		console.error("Error toggling favorite:", err);
