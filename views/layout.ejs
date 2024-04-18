@@ -1,3 +1,5 @@
+<% const isAdmin = user && (user.role == "admin" || user.role == "owner"); %>
+
 <!DOCTYPE html>
 <!-- Website Template by freewebsitetemplates.com -->
 <html>
@@ -39,10 +41,11 @@
 				<li class="<%- path === '/contacts/new' ? 'selected' : ''%>">
 					<a href="/contacts/new">contact</a>
 				</li>
+				<% if (isAdmin) { %>
 				<li class="<%- path === '/contacts' ? 'selected' : ''%>">
 					<a href="/contacts">contact requests</a>
 				</li>
-				<% if (isLoggedIn) { %>
+				<% } %> <% if (isLoggedIn) { %>
 				<li class="<%- path === '/styles/favorites' ? 'selected' : ''%>">
 					<a href="/styles/favorite">Favorite Styles</a>
 				</li>

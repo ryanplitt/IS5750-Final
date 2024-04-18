@@ -1,5 +1,8 @@
+const User = require("../models/User");
+
 module.exports = (req, res, next) => {
-	if (res.locals.user && res.locals.user.role === "admin") {
+	const user = User.hydrate(res.locals.user);
+	if (user.isAdmin) {
 		next();
 	} else {
 		const error = new Error("Unauthorized");
