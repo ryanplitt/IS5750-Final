@@ -18,9 +18,10 @@ const userSchema = new mongoose.Schema({
 		type: String,
 		required: true,
 	},
-	admin: {
-		type: Boolean,
-		default: false,
+	role: {
+		type: String,
+		enum: ["user", "admin", "owner"],
+		default: "user",
 	},
 	favoriteStyles: [
 		{
@@ -28,6 +29,10 @@ const userSchema = new mongoose.Schema({
 			ref: "Style",
 		},
 	],
+});
+
+userSchema.virtual("isAdmin").get(function () {
+	return this.role === "admin" || this.role === "owner";
 });
 
 userSchema.pre("save", async function (next) {

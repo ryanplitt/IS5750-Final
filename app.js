@@ -19,7 +19,9 @@ const contactRoutes = require("./routes/contactRoutes");
 const authRoutes = require("./routes/authRoutes.js");
 const errorController = require("./controllers/errorController");
 
-const middleware = require("./middleware");
+const middleware = require("./middleware/middleware.js");
+const isAuth = require("./middleware/isAuth");
+const isAdmin = require("./middleware/isAdmin");
 
 const app = express();
 
@@ -74,7 +76,7 @@ app.use("/auth", authRoutes);
 app.use(homeRoutes);
 
 app.use(errorController.get404);
-app.use(errorController.get500);
+app.use(errorController.getError);
 
 // start the server on port 3000
 mongoose

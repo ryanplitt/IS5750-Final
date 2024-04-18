@@ -1,10 +1,28 @@
 exports.get404 = (req, res, next) => {
-	res.render("error/404", { pageTitle: "Not Found", path: req.url });
+	res.render("error", {
+		pageTitle: "Not Found",
+		path: req.url,
+		error: "Oops. Sorry this page wasn't found",
+	});
 };
 
-exports.get500 = (err, req, res, next) => {
-	console.log("Made it to the 500 error handler");
+exports.getError = (err, req, res, next) => {
 	console.log(err);
-	// Log error to a file or do something else with it
-	res.render("error/500", { pageTitle: "Server Error", path: req.url });
+	if (err.statusCode === 403) {
+		get403(req, res);
+		return;
+	}
+	res.render("error", {
+		pageTitle: "Server Error",
+		path: req.url,
+		error: "Oops. Something went wrong. Please try again later.",
+	});
+};
+
+const get403 = (req, res) => {
+	res.render("error", {
+		pageTitle: "Unauthorized",
+		path: req.url,
+		error: "Oops. You are not authorized to view this page.",
+	});
 };
