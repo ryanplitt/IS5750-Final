@@ -18,6 +18,7 @@ const blogRoutes = require("./routes/blogRoutes");
 const contactRoutes = require("./routes/contactRoutes");
 const authRoutes = require("./routes/authRoutes.js");
 const errorController = require("./controllers/errorController");
+const User = require("./models/User");
 
 const middleware = require("./middleware/middleware.js");
 const isAuth = require("./middleware/isAuth");
@@ -54,7 +55,11 @@ app.use(
 
 app.use((req, res, next) => {
 	res.locals.isLoggedIn = req.session.isLoggedIn;
-	res.locals.user = req.session.user;
+	if (req.session.user) {
+		res.locals.user = User.hydrate(req.session.user);
+	} else {
+		res.locals.user = { isAdmin: false };
+	}
 	next();
 });
 
