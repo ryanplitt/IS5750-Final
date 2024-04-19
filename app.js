@@ -18,6 +18,7 @@ const blogRoutes = require("./routes/blogRoutes");
 const contactRoutes = require("./routes/contactRoutes");
 const authRoutes = require("./routes/authRoutes.js");
 const errorController = require("./controllers/errorController");
+const authController = require("./controllers/authController");
 const User = require("./models/User");
 
 const middleware = require("./middleware/middleware.js");
@@ -39,7 +40,7 @@ const store = new MongoDBStore({
 app.use(express.static(path.join(__dirname, "public")));
 
 // Load middleware to parse body
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({ extended: true }));
 
 app.use(express.json());
 app.use(fileUpload({ createParentPath: true }));
@@ -79,6 +80,8 @@ app.use("/contacts", contactRoutes);
 app.use("/auth", authRoutes);
 
 app.use(homeRoutes);
+
+app.post("/admin/update-privileges", authController.updatePrivileges);
 
 app.use(errorController.get404);
 app.use(errorController.getError);

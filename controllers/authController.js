@@ -98,3 +98,25 @@ exports.getLogout = async (req, res) => {
 	}
 	res.redirect("/");
 };
+
+exports.updatePrivileges = async (req, res) => {
+	try {
+		const usersUpdates = req.body.users;
+
+		if (Array.isArray(usersUpdates)) {
+			// Make sure usersUpdates is an array
+			for (const userUpdate of usersUpdates) {
+				const userId = userUpdate.id;
+				const isAdmin = userUpdate.isAdmin === "on"; // Checkbox sends 'true' as a string if checked
+				await User.findByIdAndUpdate(userId, { role: isAdmin ? "admin" : "user" });
+			}
+			res.redirect("/");
+		} else {
+			console.error("Invalid user updates data.");
+			throw new Error("Invalid user updates data.");
+		}
+	} catch (error) {
+		console.error("Error updating user privileges:", error);
+		res.status(500).send("An error occurred while updating privileges.");
+	}
+};

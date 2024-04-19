@@ -1,0 +1,22 @@
+<h1><span>Manage Admin Privileges</span></h1>
+<form action="/admin/update-privileges" method="POST">
+	<table>
+		<tr>
+			<th>Full Name</th>
+			<th>Email</th>
+			<th>Is Admin?</th>
+		</tr>
+		<% users.forEach(function(user, index) { %>
+		<tr>
+			<td><%= user.fullName %></td>
+			<td><%= user.email %></td>
+			<td>
+				<input type="checkbox" name="users[<%= index %>][isAdmin]" <%= user.isAdmin ? 'checked' : ''
+				%> >
+				<input type="hidden" name="users[<%= index %>][id]" value="<%= user._id %>" />
+			</td>
+		</tr>
+		<% }); %>
+	</table>
+	<button type="submit">Update Privileges</button>
+</form>
