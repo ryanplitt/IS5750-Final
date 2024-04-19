@@ -10,6 +10,7 @@ const MongoDBStore = require("connect-mongodb-session")(session);
 const fileUpload = require("express-fileupload");
 
 const mongoose = require("mongoose");
+require("dotenv").config();
 
 // import routes
 const homeRoutes = require("./routes/homeRoutes");
@@ -20,6 +21,7 @@ const authRoutes = require("./routes/authRoutes.js");
 const apiRoutes = require("./routes/apiRoutes");
 const errorController = require("./controllers/errorController");
 const authController = require("./controllers/authController");
+const inspirationController = require("./controllers/inspirationController");
 const User = require("./models/User");
 
 const middleware = require("./middleware/middleware.js");
@@ -36,6 +38,8 @@ const store = new MongoDBStore({
 	uri: MongoDBURL,
 	collection: "sessions",
 });
+
+require("dotenv").config();
 
 // Load middleware to point to static resources
 app.use(express.static(path.join(__dirname, "public")));
@@ -84,6 +88,8 @@ app.use("/api", apiRoutes);
 app.use(homeRoutes);
 
 app.post("/admin/update-privileges", authController.updatePrivileges);
+app.get("/inspiration", isAdmin, inspirationController.getInspiration);
+app.get("/inspiration/fetch", inspirationController.fetchInspiration);
 
 app.use(errorController.get404);
 app.use(errorController.getError);

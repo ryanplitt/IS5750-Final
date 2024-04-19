@@ -1,0 +1,22 @@
+<h1><span>Inspiration</span></h1>
+<div>
+	<button onclick="fetchInspiration()" class="more">Get Inspired!</button>
+</div>
+<div id="gallery"></div>
+
+<script>
+	function fetchInspiration() {
+		console.log("fetching inspiration");
+		fetch("/inspiration/fetch")
+			.then((response) => response.json())
+			.then((image) => {
+				const gallery = document.getElementById("gallery");
+				gallery.innerHTML = ""; // Clear previous images
+				const imgElement = document.createElement("img");
+				imgElement.src = image.url; // Access properties directly without forEach
+				imgElement.alt = image.alt || "Inspiring mustache image";
+				gallery.appendChild(imgElement);
+			})
+			.catch((error) => console.error("Error fetching images:", error));
+	}
+</script>

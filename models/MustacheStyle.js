@@ -42,7 +42,7 @@ mustacheStyleSchema.virtual("fullImageUrl").get(function () {
 
 mustacheStyleSchema.set("toJSON", {
 	virtuals: true,
-	versionKey: false, // Exclude the __v field
+	versionKey: false,
 	transform: function (doc, ret) {
 		delete ret._id;
 		delete ret.imageURL;

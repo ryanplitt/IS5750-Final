@@ -554,3 +554,20 @@ p a:hover {
 #footer div ul li #pinterest:hover {
 	background-position: -44px -132px;
 }
+.more {
+	background: #000;
+	color: #fff;
+	display: inline-block;
+	font-family: "Arial Black", Gadget, sans-serif;
+	font-size: 18px;
+	font-weight: normal;
+	margin: 12px;
+	padding: 8px 28px;
+	text-decoration: none;
+	text-transform: uppercase;
+}
+.more:hover {
+	color: #252525;
+	background: #fff;
+	border: 2px solid #252525;
+}
