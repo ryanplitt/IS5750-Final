@@ -308,6 +308,7 @@ p a:hover {
 	margin: 0 auto;
 	padding: 24px 0 0;
 	width: 620px;
+	text-align: center; 
 }
 #body form input, #body form textarea {
 	border: 2px solid #252525;
