@@ -91,6 +91,21 @@ app.post("/admin/update-privileges", isAdmin, authController.updatePrivileges);
 app.get("/inspiration", isAdmin, inspirationController.getInspiration);
 app.get("/inspiration/fetch", isAdmin, inspirationController.fetchInspiration);
 app.post("/inspiration/save", isAdmin, inspirationController.saveInspiration);
+app.get("/external-api", (req, res) => {
+	res.render("external-api", { pageTitle: "External API", path: req.path });
+});
+app.get("/random-mustache-image", async (req, res) => {
+	try {
+		const image = await inspirationController.fetchRandomMustachePhoto();
+		if (image) {
+			res.status(200).json({ url: image.urls.regular });
+		} else {
+			res.status(404).send("Image not found");
+		}
+	} catch (error) {
+		res.status(500).send("Server error");
+	}
+});
 
 app.use(errorController.get404);
 app.use(errorController.getError);

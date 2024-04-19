@@ -14,26 +14,13 @@ exports.getInspiration = (req, res, next) => {
 };
 
 exports.fetchInspiration = async (req, res) => {
-	const inspirationAxios = axios.create({
-		baseURL: "https://api.unsplash.com/",
-		headers: {
-			Authorization: `Client-ID ${process.env.UNSPLASH_ACCESS_KEY}`,
-		},
-	});
-
 	try {
-		const response = await inspirationAxios.get("photos/random", {
-			params: {
-				query: "mustache",
-				count: 1,
-			},
-		});
+		const image = await fetchRandomMustachePhoto(); // Get random image
 
-		// Process the first image fetched from Unsplash
-		const image = response.data[0];
 		const imageResponse = await axios.get(image.urls.regular, {
 			responseType: "arraybuffer",
 		});
+
 		const descriptionProcessedImage = await sharp(imageResponse.data).resize(512, 512).toBuffer();
 		const processedImage = await sharp(imageResponse.data).resize(295, 295).grayscale().toBuffer();
 
@@ -68,6 +55,30 @@ const convertImageToBase64Url = (image) => {
 	const fullImageUrl = `data:image/jpeg;base64,${base64Image}`;
 	return fullImageUrl;
 };
+
+const fetchRandomMustachePhoto = async () => {
+	const inspirationAxios = axios.create({
+		baseURL: "https://api.unsplash.com/",
+		headers: {
+			Authorization: `Client-ID ${process.env.UNSPLASH_ACCESS_KEY}`,
+		},
+	});
+
+	try {
+		const response = await inspirationAxios.get("photos/random", {
+			params: {
+				query: "mustache",
+				count: 1,
+			},
+		});
+		return response.data[0]; // Return the first image object
+	} catch (error) {
+		console.error("Error fetching random photo:", error);
+		throw new Error("Failed to fetch random photo");
+	}
+};
+
+module.exports.fetchRandomMustachePhoto = fetchRandomMustachePhoto;
 
 getImageName = async (fullImageUrl) => {
 	const response = await openai.chat.completions.create({

@@ -1,0 +1,39 @@
+<h1><span>Inspiration</span></h1>
+<div>
+	<button onclick="fetchRandomImage()" class="more">Fetch Random Mustache Image</button>
+</div>
+<div id="gallery"></div>
+
+<script>
+	function fetchRandomImage() {
+		fetch("/random-mustache-image")
+			.then((response) => {
+				if (!response.ok) {
+					throw new Error("Failed to fetch image");
+				}
+				return response.json();
+			})
+			.then((data) => {
+				const gallery = document.getElementById("gallery");
+				gallery.innerHTML = "";
+				const imgElement = document.createElement("img");
+				imgElement.src = data.url;
+				imgElement.alt = "Random Mustache Image";
+				gallery.appendChild(imgElement);
+			})
+			.catch((error) => {
+				console.error("Error fetching image:", error);
+				alert("Error fetching image: " + error.message);
+			});
+	}
+</script>
+
+<style>
+	#gallery {
+		height: 500px;
+	}
+	#gallery img {
+		width: auto;
+		height: 100%;
+	}
+</style>
