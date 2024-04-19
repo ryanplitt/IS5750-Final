@@ -17,6 +17,7 @@ const stylesRoutes = require("./routes/stylesRoutes");
 const blogRoutes = require("./routes/blogRoutes");
 const contactRoutes = require("./routes/contactRoutes");
 const authRoutes = require("./routes/authRoutes.js");
+const apiRoutes = require("./routes/apiRoutes");
 const errorController = require("./controllers/errorController");
 const authController = require("./controllers/authController");
 const User = require("./models/User");
@@ -78,6 +79,7 @@ app.use("/styles", stylesRoutes);
 app.use("/blog", blogRoutes);
 app.use("/contacts", contactRoutes);
 app.use("/auth", authRoutes);
+app.use("/api", apiRoutes);
 
 app.use(homeRoutes);
 

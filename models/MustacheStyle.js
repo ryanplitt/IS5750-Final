@@ -31,6 +31,26 @@ const mustacheStyleSchema = new mongoose.Schema({
 	},
 });
 
+const BASE_IMAGE_URL = "http://localhost:3000/images/";
+
+mustacheStyleSchema.virtual("fullImageUrl").get(function () {
+	if (this.imageURL) {
+		return BASE_IMAGE_URL + this.imageURL;
+	}
+	return null;
+});
+
+mustacheStyleSchema.set("toJSON", {
+	virtuals: true,
+	versionKey: false, // Exclude the __v field
+	transform: function (doc, ret) {
+		delete ret._id;
+		delete ret.imageURL;
+		delete ret.titleSlug;
+		return ret;
+	},
+});
+
 const MustacheStyle = mongoose.model("MustacheStyle", mustacheStyleSchema);
 
 module.exports = MustacheStyle;
