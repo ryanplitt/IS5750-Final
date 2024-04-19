@@ -3,7 +3,6 @@ const path = require("path");
 
 // Import npm libraries
 const express = require("express");
-const ejs = require("ejs");
 const expressLayouts = require("express-ejs-layouts");
 const session = require("express-session");
 const MongoDBStore = require("connect-mongodb-session")(session);
@@ -25,13 +24,11 @@ const inspirationController = require("./controllers/inspirationController");
 const User = require("./models/User");
 
 const middleware = require("./middleware/middleware.js");
-const isAuth = require("./middleware/isAuth");
 const isAdmin = require("./middleware/isAdmin");
 
 const app = express();
 
-const MongoDBURL =
-	"mongodb+srv://ryanplitt:9c4NFpxojEzlypx2@cluster0.5eehl2z.mongodb.net/mustacchio?retryWrites=true&w=majority&appName=Cluster0";
+const MongoDBURL = `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@cluster0.5eehl2z.mongodb.net/${process.env.MONGO_DATABASE}?retryWrites=true&w=majority&appName=Cluster0`;
 
 // Initialize session store
 const store = new MongoDBStore({
@@ -110,12 +107,11 @@ app.get("/random-mustache-image", async (req, res) => {
 app.use(errorController.get404);
 app.use(errorController.getError);
 
-// start the server on port 3000
 mongoose
 	.connect(MongoDBURL)
 	.then(() => {
-		app.listen(3000, () => {
-			console.log("Server started on http://localhost:3000");
+		app.listen(process.env.PORT || 3000, () => {
+			console.log("Server started");
 		});
 	})
 	.catch((err) => {

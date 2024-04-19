@@ -20,7 +20,9 @@
 			<a href="/" class="logo">
 				<img src="/images/logo.jpg" alt="" />
 			</a>
-
+			<% if (user) { %>
+			<h2>Welcome, <%= user.firstName %></h2>
+			<% } %>
 			<ul id="navigation">
 				<li class="<%- path === '/' ? 'selected' : '' %>">
 					<a href="/">home</a>
