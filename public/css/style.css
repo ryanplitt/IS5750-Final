@@ -41,7 +41,7 @@ p a:hover {
 }
 #header {
 	margin: 0 auto;
-	padding: 44px 0 50px;
+	padding: 44px 0 20px;
 	text-align: center;
 	width: 1050px;
 }
@@ -59,13 +59,13 @@ p a:hover {
 }
 #header ul {
 	margin: 0;
-	padding: 56px 0 0;
+	padding: 20px 0 0;
 }
 #header ul li {
 	display: inline;
 	list-style: none;
 	margin: 0;
-	padding: 0 19px;
+	padding: 0 25px;
 }
 #header ul li a {
 	color: #252525;

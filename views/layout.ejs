@@ -22,44 +22,49 @@
 			</a>
 
 			<ul id="navigation">
-				<li class="<%- path === '/' ? 'selected' : ''%>">
+				<li class="<%- path === '/' ? 'selected' : '' %>">
 					<a href="/">home</a>
 				</li>
-				<li class="<%- path.includes('about') ? 'selected' : ''%>">
+				<li class="<%- path.includes('about') ? 'selected' : '' %>">
 					<a href="/about">about</a>
 				</li>
-				<li class="<%- path.includes('styles') && !path.includes('favorites') ? 'selected' : ''%>">
+				<li class="<%- path.includes('styles') && !path.includes('favorites') ? 'selected' : '' %>">
 					<a href="/styles">gallery</a>
 				</li>
-				<li class="<%- path.includes('blog') ? 'selected' : ''%>">
+				<li class="<%- path.includes('blog') ? 'selected' : '' %>">
 					<a href="/blog">blog</a>
 				</li>
-				<li class="<%- path === '/contacts/new' ? 'selected' : ''%>">
+				<li class="<%- path === '/contacts/new' ? 'selected' : '' %>">
 					<a href="/contacts/new">contact</a>
 				</li>
-				<% if (user.isAdmin) { %>
-				<li class="<%- path === '/contacts' ? 'selected' : ''%>">
-					<a href="/contacts">contact requests</a>
-				</li>
-				<li class="<%- path === '/user-access' ? 'selected' : ''%>">
-					<a href="/user-access">user access</a>
-				</li>
-				<li class="<%- path === '/inspiration' ? 'selected' : ''%>">
-					<a href="/inspiration">inspiration</a>
-				</li>
-				<% } %> <% if (isLoggedIn) { %>
-				<li class="<%- path === '/styles/favorites' ? 'selected' : ''%>">
+				<% if (isLoggedIn) { %>
+				<li class="<%- path === '/styles/favorites' ? 'selected' : '' %>">
 					<a href="/styles/favorite">Favorite Styles</a>
 				</li>
 				<li>
 					<a href="/auth/logout">Logout</a>
 				</li>
 				<% } else { %>
-				<li class="<%- path === '/auth/login' ? 'selected' : ''%>">
+				<li class="<%- path === '/auth/login' ? 'selected' : '' %>">
 					<a href="/auth/login">Login</a>
 				</li>
 				<% } %>
 			</ul>
+
+			<% if (user.isAdmin) { %>
+			<!-- This ul only appears for admins -->
+			<ul id="admin-navigation">
+				<li class="<%- path === '/contacts' ? 'selected' : '' %>">
+					<a href="/contacts">contact requests</a>
+				</li>
+				<li class="<%- path === '/user-access' ? 'selected' : '' %>">
+					<a href="/user-access">user access</a>
+				</li>
+				<li class="<%- path === '/inspiration' ? 'selected' : '' %>">
+					<a href="/inspiration">inspiration</a>
+				</li>
+			</ul>
+			<% } %>
 		</div>
 		<div id="body"><%- body %></div>
 		<div id="footer"><%- include('partials/social.ejs') %></div>
