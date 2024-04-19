@@ -3,20 +3,60 @@
 	<button onclick="fetchInspiration()" class="more">Get Inspired!</button>
 </div>
 <div id="gallery"></div>
+<div id="spinner" class="spinner" style="display: none"></div>
+<div id="title"></div>
+<div id="description"></div>
+<form action="/inspiration/save" method="post">
+	<input type="hidden" id="formTitle" name="title" value="" />
+	<input type="hidden" id="formDescription" name="description" value="" />
+	<input type="hidden" id="formImageId" name="imageId" value="" />
+	<button type="submit" id="send" style="display: none">Save Inspiration</button>
+</form>
 
 <script>
 	function fetchInspiration() {
 		console.log("fetching inspiration");
+
+		// clear out image, title, and description
+		const gallery = document.getElementById("gallery");
+		gallery.innerHTML = "";
+		const title = document.getElementById("title");
+		title.innerHTML = "";
+		const description = document.getElementById("description");
+		description.innerHTML = "";
+
+		const spinner = document.getElementById("spinner");
+		spinner.style.display = "block";
+
 		fetch("/inspiration/fetch")
 			.then((response) => response.json())
 			.then((image) => {
-				const gallery = document.getElementById("gallery");
-				gallery.innerHTML = ""; // Clear previous images
+				// Hide spinner after image is fetched
+				spinner.style.display = "none";
+
+				// Display image
+				gallery.innerHTML = "";
 				const imgElement = document.createElement("img");
-				imgElement.src = image.url; // Access properties directly without forEach
+				imgElement.src = image.url;
 				imgElement.alt = image.alt || "Inspiring mustache image";
 				gallery.appendChild(imgElement);
+
+				// Set title and description
+				title.innerHTML = `<h4>${image.title}</h4>`;
+				description.innerHTML = `<p>${image.description}</p>`;
+
+				// Save Form Data
+				document.getElementById("formTitle").value = image.title;
+				document.getElementById("formDescription").value = image.description;
+				document.getElementById("formImageId").value = image.id;
+
+				// Show save button
+				const submitBtn = document.getElementById("send");
+				submitBtn.style.display = "block";
 			})
-			.catch((error) => console.error("Error fetching images:", error));
+			.catch((error) => {
+				console.error("Error fetching images:", error);
+				spinner.style.display = "none";
+			});
 	}
 </script>

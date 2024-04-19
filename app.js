@@ -87,9 +87,10 @@ app.use("/api", apiRoutes);
 
 app.use(homeRoutes);
 
-app.post("/admin/update-privileges", authController.updatePrivileges);
+app.post("/admin/update-privileges", isAdmin, authController.updatePrivileges);
 app.get("/inspiration", isAdmin, inspirationController.getInspiration);
-app.get("/inspiration/fetch", inspirationController.fetchInspiration);
+app.get("/inspiration/fetch", isAdmin, inspirationController.fetchInspiration);
+app.post("/inspiration/save", isAdmin, inspirationController.saveInspiration);
 
 app.use(errorController.get404);
 app.use(errorController.getError);

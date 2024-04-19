@@ -99,16 +99,25 @@ exports.getLogout = async (req, res) => {
 	res.redirect("/");
 };
 
-exports.updatePrivileges = async (req, res) => {
+exports.updatePrivileges = async (req, res, next) => {
 	try {
 		const usersUpdates = req.body.users;
 
 		if (Array.isArray(usersUpdates)) {
-			// Make sure usersUpdates is an array
 			for (const userUpdate of usersUpdates) {
 				const userId = userUpdate.id;
 				const isAdmin = userUpdate.isAdmin === "on"; // Checkbox sends 'true' as a string if checked
-				await User.findByIdAndUpdate(userId, { role: isAdmin ? "admin" : "user" });
+
+				const updatedUser = await User.findByIdAndUpdate(
+					userId,
+					{ role: isAdmin ? "admin" : "user" },
+					{ new: true }
+				);
+
+				if (userId === req.session.user._id.toString()) {
+					req.session.user.role = updatedUser.role;
+					await req.session.save();
+				}
 			}
 			res.redirect("/");
 		} else {
@@ -117,6 +126,6 @@ exports.updatePrivileges = async (req, res) => {
 		}
 	} catch (error) {
 		console.error("Error updating user privileges:", error);
-		res.status(500).send("An error occurred while updating privileges.");
+		next(error);
 	}
 };

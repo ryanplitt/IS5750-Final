@@ -5,9 +5,12 @@
 <% } else { %>
 	<h1><span>Style Gallery</span></h1>
 	<% if (user.isAdmin) { %>
-		<div>
+		<div class="buttons-row">
 		<div class="button-container">
 			<a href="/styles/new" class="button1">New Style</a>
+		</div>
+		<div class="button-container">
+			<a href="/inspiration" class="button1">Need Inspiration?</a>
 		</div>
 		</div>
 	<% } %>
