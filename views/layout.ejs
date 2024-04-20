@@ -20,7 +20,7 @@
 			<a href="/" class="logo">
 				<img src="/images/logo.jpg" alt="" />
 			</a>
-			<% if (user) { %>
+			<% if (user && user.firstName) { %>
 			<h2>Welcome, <%= user.firstName %></h2>
 			<% } %>
 			<ul id="navigation">

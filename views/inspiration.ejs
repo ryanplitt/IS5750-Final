@@ -3,7 +3,9 @@
 	<button onclick="fetchInspiration()" class="more">Get Inspired!</button>
 </div>
 <div id="gallery"></div>
-<div id="spinner" class="spinner" style="display: none"></div>
+<div id="spinner-container" style="display: none">
+	<div class="spinner"></div>
+</div>
 <div id="title"></div>
 <div id="description"></div>
 <form action="/inspiration/save" method="post">
@@ -25,14 +27,14 @@
 		const description = document.getElementById("description");
 		description.innerHTML = "";
 
-		const spinner = document.getElementById("spinner");
-		spinner.style.display = "block";
+		const spinnerContainer = document.getElementById("spinner-container");
+		spinnerContainer.style.display = "flex";
 
 		fetch("/inspiration/fetch")
 			.then((response) => response.json())
 			.then((image) => {
 				// Hide spinner after image is fetched
-				spinner.style.display = "none";
+				spinnerContainer.style.display = "none";
 
 				// Display image
 				gallery.innerHTML = "";
@@ -56,7 +58,7 @@
 			})
 			.catch((error) => {
 				console.error("Error fetching images:", error);
-				spinner.style.display = "none";
+				spinnerContainer.style.display = "none";
 			});
 	}
 </script>

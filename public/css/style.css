@@ -578,18 +578,24 @@ p a:hover {
 	border: 2px solid #252525;
 }
 
-.spinner {
-    box-sizing: border-box;
-    border: 4px solid rgba(0, 0, 0, 0.1);
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    border-left-color: #09f;
-    animation: spin 1s ease infinite;
+#spinner-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100px; 
+    z-index: 1000; /* Ensures it is on top of other content */
 }
 
+.spinner {
+    border: 4px solid rgba(0, 0, 0, 0.1); /* Light grey for all but the top border */
+    border-top-color: #09f; /* Blue for the top border */
+    border-radius: 50%; /* Circular border */
+    width: 36px; /* Exact width */
+    height: 36px; /* Exact height */
+    animation: spin 1s linear infinite; /* Rotation animation */
+}
 
 @keyframes spin {
-	0% { transform: rotate(0deg); }
-	100% { transform: rotate(360deg); }
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
 }

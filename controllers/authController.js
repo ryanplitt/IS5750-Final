@@ -35,12 +35,6 @@ exports.loginWebApp = async (req, res, next) => {
 	if (res.locals && res.locals.user && res.locals.passwordsMatch) {
 		req.session.isLoggedIn = true;
 		req.session.user = res.locals.user;
-		console.log(
-			"Setting session, user: ",
-			req.session.user,
-			"isLoggedIn: ",
-			req.session.isLoggedIn
-		);
 		try {
 			await req.session.save();
 			res.redirect("/");
